@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>软考信息安全工程师 · 5天冲刺</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand" onclick="go('home')">信息安全工程师 <span>5天冲刺</span></div>
+    <nav class="nav">
+      <button data-tab="home" onclick="go('home')">今日</button>
+      <button data-tab="plan" onclick="go('plan')">5天计划</button>
+      <button data-tab="learn" onclick="go('learn')">知识卡</button>
+      <button data-tab="quiz" onclick="go('quiz')">刷题</button>
+      <button data-tab="case" onclick="go('case')">案例</button>
+      <button data-tab="mock" onclick="go('mock')">模考</button>
+      <button data-tab="wrong" onclick="go('wrong')">错题本</button>
+      <button onclick="window.open('cheatsheet.html','_blank')">考前速记</button>
+    </nav>
+    <div class="stats" id="topStats"></div>
+  </header>
+  <main id="main"></main>
+</div>
+<script src="data/m01-basic.js"></script>
+<script src="data/m02-crypto.js"></script>
+<script src="data/m03-net.js"></script>
+<script src="data/m04-attack.js"></script>
+<script src="data/m05-fw.js"></script>
+<script src="data/m06-vpn.js"></script>
+<script src="data/m07-ids.js"></script>
+<script src="data/m08-malware.js"></script>
+<script src="data/m09-auth.js"></script>
+<script src="data/m10-sys.js"></script>
+<script src="data/m11-mgmt.js"></script>
+<script src="data/m12-calc.js"></script>
+<script src="data/m13-en.js"></script>
+<script src="data/m14-case.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

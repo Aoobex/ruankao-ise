@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息安全工程师 · 考前 1 小时速记</title>
+<style>
+:root{--line:#d8dee6;--dim:#5b6672;--hi:#b3261e;--bg:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f4f6f8;color:#1c2229;font:14px/1.7 "Microsoft YaHei","PingFang SC",system-ui,sans-serif;padding:22px}
+main{max-width:900px;margin:0 auto;background:var(--bg);padding:30px 34px 40px;border-radius:10px;box-shadow:0 2px 14px rgba(0,0,0,.08)}
+h1{font-size:24px;margin-bottom:4px}
+h2{font-size:17px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid #1c2229}
+h3{font-size:14px;margin:12px 0 4px;color:var(--dim)}
+p,li{font-size:13.5px}
+ul{margin-left:18px;display:grid;gap:3px}
+b{color:var(--hi)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#eef1f5;font-weight:600}
+.sub{color:var(--dim);font-size:12.5px}
+.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.btn{background:#1c2229;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+@media print{
+  body{background:#fff;padding:0}
+  main{box-shadow:none;border-radius:0;padding:0 8mm;max-width:none}
+  .btn{display:none}
+  h2{break-after:avoid}
+  table,.grid>div{break-inside:avoid}
+}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <h1>信息安全工程师 · 考前 1 小时速记</h1>
+  <button class="btn" onclick="window.print()">打印 / 存 PDF</button>
+</div>
+<p class="sub">只放"一定会考、且容易记混"的。进考场前看这一张就够，别再看新东西。及格 45 分，两科都要过。</p>
+
+<div class="grid">
+<div>
+<h2>一、数字与年限</h2>
+<table>
+<tr><th>考点</th><th>答案</th></tr>
+<tr><td>网络安全法施行</td><td>2017-06-01（2025 修正版 2026-01-01）</td></tr>
+<tr><td>密码法施行</td><td>2020-01-01</td></tr>
+<tr><td>数据安全法 / 个保法</td><td>2021-09-01 / 2021-11-01</td></tr>
+<tr><td>商用密码管理条例</td><td>2023-07-01</td></tr>
+<tr><td>日志留存</td><td>不少于 <b>6 个月</b></td></tr>
+<tr><td>等保三级测评</td><td><b>每年</b>至少一次（四级每半年）</td></tr>
+<tr><td>等保五级</td><td>自主 / 审计 / 标记 / 结构化 / 访问验证</td></tr>
+<tr><td>等保五动作</td><td>定级、备案、建设整改、等级测评、监督检查</td></tr>
+<tr><td>应急六阶段</td><td>准备、检测、抑制、根除、恢复、总结</td></tr>
+<tr><td>口令最短长度</td><td>≥ 8 位，大小写+数字+特殊字符</td></tr>
+</table>
+
+<h2>二、密码学参数</h2>
+<table>
+<tr><th>算法</th><th>关键数字</th></tr>
+<tr><td>DES</td><td>分组 64 位，密钥 56 位，Feistel 16 轮</td></tr>
+<tr><td>3DES（双密钥）</td><td>有效 112 位</td></tr>
+<tr><td>AES</td><td>分组 128 位；10/12/14 轮（128/192/256）</td></tr>
+<tr><td>MD5 / SHA-1</td><td>128 位 / 160 位</td></tr>
+<tr><td>SM3</td><td>输出 256 位，分组 512 位</td></tr>
+<tr><td>SM4</td><td>对称分组，128 位分组/128 位密钥，无线局域网</td></tr>
+<tr><td>SM2 / SM9</td><td>椭圆曲线公钥 / 标识密码</td></tr>
+<tr><td>SM1</td><td>对称，算法不公开</td></tr>
+<tr><td>RSA 强度</td><td>3072 位 ≈ ECC 256 位</td></tr>
+<tr><td>生日攻击</td><td>n 位哈希碰撞约 2^(n/2)</td></tr>
+</table>
+<ul>
+<li><b>签名用私钥，验签用公钥</b>；加密用对方公钥，解密用自己私钥。</li>
+<li>数字签名提供完整性 + 身份认证 + 抗抵赖，<b>不提供机密性</b>。</li>
+<li>数字信封：对称密钥加密数据，<b>接收方公钥加密会话密钥</b>。</li>
+<li>RSA：n=pq，φ(n)=(p-1)(q-1)，e·d mod φ(n)=1。</li>
+<li>DH 不能抗<b>中间人</b>；ECB 相同明文块→相同密文块；CBC 加密不能并行、解密可以。</li>
+<li>分组模式：CTR 可并行可随机访问；OFB 可预计算、一位错只影响一位。</li>
+<li>唯密文 / 已知明文 / 选择明文 / 选择密文 —— 攻击者能力由弱到强。</li>
+</ul>
+
+<h2>三、协议与端口</h2>
+<table>
+<tr><td>20/21 FTP</td><td>22 SSH</td><td>23 Telnet</td><td>25 SMTP</td></tr>
+<tr><td>53 DNS</td><td>67/68 DHCP</td><td>80 HTTP</td><td>110 POP3</td></tr>
+<tr><td>143 IMAP</td><td>161/162 SNMP</td><td>389 LDAP</td><td>443 HTTPS</td></tr>
+<tr><td>1433 SQLServer</td><td>1521 Oracle</td><td>3306 MySQL</td><td>3389 RDP</td></tr>
+</table>
+<ul>
+<li>IPSec：AH 只认证（协议号 51）、ESP 加密+认证（50）、IKE 用 UDP 500。</li>
+<li>隧道模式用于<b>网关到网关</b>，传输模式用于主机到主机；AH 不能过 NAT。</li>
+<li>SSL VPN 用 <b>443</b>，免客户端、按应用授权；IPSec VPN 适合网关互联。</li>
+<li>ARP 欺骗根源：ARP 无认证；防御用静态绑定、DAI（依赖 DHCP Snooping 表）。</li>
+<li>DNSSEC 只保证解析结果真实完整，<b>不加密</b>。</li>
+<li>IPv6 基本首部固定 40 字节，<b>无校验和</b>。</li>
+</ul>
+</div>
+
+<div>
+<h2>四、攻击与防御一句话</h2>
+<ul>
+<li><b>SQL 注入</b>：根本防御 = 参数化查询（预编译）；WAF 只是补充。</li>
+<li><b>XSS</b>：根本防御 = 按 HTML 上下文输出编码；HttpOnly 只保护 Cookie。</li>
+<li><b>CSRF</b>：根本防御 = 随机 Token 校验 / SameSite；不是 HTTPS。</li>
+<li><b>文件上传</b>：白名单 + 重命名 + 存非 Web 目录 + 目录禁止执行。</li>
+<li><b>XXE</b>：禁用 XML 外部实体。</li>
+<li><b>SSRF</b>：169.254.169.254 是云元数据，可拿临时凭据。</li>
+<li><b>越权</b>：普通用户干管理员的活 = 垂直越权。</li>
+<li><b>CC 攻击</b>：模拟合法请求耗资源；<b>SYN Flood</b>：占满半连接队列。</li>
+<li><b>DNS 反射放大</b>：伪造<b>受害者</b>源地址。</li>
+<li>OWASP Top 10（2021）第一是<b>访问控制失效</b>，不是注入。</li>
+<li>OWASP 2021 十项：访问控制失效、加密机制失效、注入、不安全设计、安全配置错误、易受攻击组件、身份认证失效、软件数据完整性失效、日志监控失效、SSRF。</li>
+</ul>
+
+<h2>五、设备与体系</h2>
+<ul>
+<li>防火墙防不了：<b>内网攻击、病毒、绕过（手机热点）、内部人员</b>。</li>
+<li>包过滤看五元组、无状态、<b>规则自上而下匹配</b>；状态检测维护会话表。</li>
+<li>应用代理最安全也最慢；<b>屏蔽子网（DMZ）安全性最高</b>。</li>
+<li>iptables 四表：filter / nat / mangle / raw；filter 三链：INPUT / FORWARD / OUTPUT。</li>
+<li>放行网站：<code>-A INPUT -p tcp --dport 80 -j ACCEPT</code>；默认拒绝 <code>-P INPUT DROP</code>；清空 <code>-F</code>。</li>
+<li>对外网站只开 <b>80/443</b>；数据库 3306 只允许应用服务器访问。</li>
+<li>网闸用于<b>非 TCP/IP 摆渡</b>；单向导入用于"只出不进"。</li>
+<li>IDS 旁路告警，IPS 串联阻断；CIDF 四件：产生器、分析器、响应单元、事件数据库。</li>
+<li>误用检测=特征库，只知已知、误报低；异常检测=基线，能发现未知、误报高。</li>
+<li>NIDS 部署在交换机<b>镜像口</b>；HIDS 看日志与文件完整性。</li>
+<li>审计是<b>事后</b>措施；蜜罐是诱捕。</li>
+</ul>
+
+<h2>六、恶意代码与认证</h2>
+<ul>
+<li><b>蠕虫</b>：主动扫描、自我复制、不需宿主。<b>木马</b>：伪装、不自我复制、可远程控制。</li>
+<li>病毒四特性：隐蔽、传染、潜伏、破坏；三部件：复制传染、隐藏、破坏。</li>
+<li>蠕虫四模块：探测、传播、引擎、负载。</li>
+<li>特征码只能查已知，多态/加壳/未知变种无效。</li>
+<li>认证四依据：所知（口令）、所有（U 盾）、生物特征、行为特征。</li>
+<li>口令存储：<b>加盐哈希</b>，不是加密、不是 Base64。</li>
+<li>Kerberos 用对称密码，<b>要求时间同步</b>；AS 发 TGT，TGS 发票据。</li>
+<li>PKI：CA 签发/吊销，RA 审核身份，CRL 列表，OCSP 实时查询。</li>
+<li>DAC 看 ACL；MAC 看标签（BLP：<b>不上读、不下写</b>）；RBAC 看角色；ABAC 看属性。</li>
+<li>Linux 权限 rwxr-xr-- = <b>754</b>；/etc/shadow 存哈希，权限 400。</li>
+<li>Windows：访问令牌含 SID，DACL 管访问，SACL 管审计。</li>
+</ul>
+
+<h2>七、管理与计算</h2>
+<ul>
+<li>风险 = 资产 + 威胁 + 脆弱性；风险值 = 可能性 × 影响。</li>
+<li>四处置：规避、转移（买保险）、减轻、接受；处理后仍有<b>残余风险</b>。</li>
+<li>SLE = 资产价值 × 暴露因子；ALE = SLE × ARO。</li>
+<li>可用性 A = MTBF/(MTBF+MTTR)；串联相乘，并联 1-∏(1-Ai)。</li>
+<li>RTO = 恢复时间目标；RPO = 恢复点目标（能丢多少数据）。</li>
+<li>容灾：冷 / 温 / 热站点；备份 <b>3-2-1</b>：3 份、2 种介质、1 份异地。</li>
+<li>子网：/26 块 64、/27 块 32、/28 块 16；可用主机 = 2^h − 2。</li>
+<li>取证优先易失数据：内存/连接 → 磁盘 → 备份；镜像算 <b>MD5/SHA-256</b> 比对。</li>
+</ul>
+
+<h2>八、下午卷答题铁律</h2>
+<ul>
+<li><b>一条一行、写编号、术语开头</b>。阅卷按关键词给分。</li>
+<li>问风险就写风险，问措施就写措施；措施分<b>技术 + 管理</b>两类各 2-3 条。</li>
+<li>不会也要写满相关术语，空题必然 0 分。</li>
+<li>5 题约 120 分钟，每题 20-22 分钟；先做会的。</li>
+<li>常用句式：「未对输入进行校验，存在 SQL 注入」「采用最小权限原则，仅授予业务所需权限」「部署于 DMZ 区，与内网隔离」「默认拒绝，按需放行」。 </li>
+</ul>
+</div>
+</div>
+
+<hr style="margin:24px 0 12px;border:none;border-top:1px solid var(--line)">
+<p class="sub">配套系统：双击 <b>index.html</b> 打开题库与案例练习。本页可直接 Ctrl+P 打印成 A4 双面。</p>
+</main>
+</body>
+</html>
