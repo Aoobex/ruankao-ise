@@ -11,6 +11,7 @@
 
   /* ---------- 状态 ---------- */
   const KEY = 'ise5.v1';
+  let storageMode = '浏览器 localStorage';
   const DEF = { cards: {}, days: {}, picked: {}, wrong: {}, mock: [], cases: {}, start: todayStr(), examDate: '2026-10-24' };
   let S = load();
   function todayStr() { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -20,7 +21,11 @@
     try { return Object.assign(base, JSON.parse(localStorage.getItem(KEY) || '{}')); }
     catch (e) { return base; }
   }
-  function save() { localStorage.setItem(KEY, JSON.stringify(S)); }
+  function save() {
+    S.savedAt = Date.now();
+    localStorage.setItem(KEY, JSON.stringify(S));
+    if (typeof pushProfile === 'function') pushProfile();
+  }
 
   /* ---------- 5天计划 ---------- */
   const PLAN = [
@@ -211,6 +216,21 @@
       <div class="sub" style="margin:6px 0 10px">已做 ${w.done}/${w.total} 题</div>
       <button class="btn sm ghost" onclick="startQuiz(['${w.m.id}'],15)">马上练</button></div>`).join('')}</div>` : ''}
 
+    <h2>进度文件 / 导出 / 重置</h2>
+    <div class="card">
+      <p class="sub" style="margin-bottom:12px">进度默认存在浏览器 localStorage；用 <code>run-server.ps1</code> 启动时，会自动读写项目根目录的 <b>profile.json</b>——把它 git push 上去，另一台设备 pull 下来打开就是同一份进度。</p>
+      <div class="row">
+        <button class="btn sm" onclick="exportProgress()">导出进度（profile.json）</button>
+        <button class="btn sm ghost" onclick="resetAll()">重置进度</button>
+        <span class="spacer"></span>
+        <span class="sub" id="syncHint">${S.savedAt ? '上次保存：' + new Date(S.savedAt).toLocaleString('zh-CN') : '还没有保存过'}</span>
+      </div>
+      <hr>
+      <div class="sub"><b>当前存储：</b>${storageMode}。${storageMode === 'profile.json（自动读写）'
+        ? '换设备时把 profile.json 一起同步（git / 网盘）即可。'
+        : '双击打开时浏览器不允许网页写本地文件，所以进度只存在本机；想用 profile.json 请用 run-server.ps1 启动（或点「导出进度」手动保存文件）。'}</div>
+    </div>
+
     <h2>零基础就按这四步走</h2>
     <div class="card">
       <ol style="margin-left:18px;display:grid;gap:8px;color:#c7d1db">
@@ -237,7 +257,59 @@
   }
 
   window.setExamDate = function (v) { S.examDate = v; save(); render(); };
-  window.setDay = function (d) { S.manualDay = d; save(); render(); };
+
+  /* ---------- 进度持久化：localStorage + profile.json ----------
+     用 run-server.ps1 启动时，页面通过 /api/profile 读写项目根目录的 profile.json；
+     双击 index.html（file://）时浏览器不允许写本地文件，自动退回 localStorage。 */
+  const PROFILE_URL = 'api/profile';
+
+  async function pullProfile() {
+    try {
+      const r = await fetch(PROFILE_URL, { cache: 'no-store' });
+      if (!r.ok) return;
+      const data = await r.json();
+      if (!data || typeof data !== 'object' || !('picked' in data || 'cards' in data)) return;
+      storageMode = 'profile.json（自动读写）';
+      /* 文件比本机新才覆盖，避免把刚做过的进度冲掉 */
+      if ((data.savedAt || 0) > (S.savedAt || 0)) {
+        S = Object.assign(JSON.parse(JSON.stringify(DEF)), data);
+        localStorage.setItem(KEY, JSON.stringify(S));
+      }
+    } catch (e) { /* 没启动服务器：继续用 localStorage */ }
+  }
+
+  let pushTimer = null;
+  function pushProfile() {
+    if (storageMode !== 'profile.json（自动读写）') return;
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(() => {
+      fetch(PROFILE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(S)
+      }).catch(() => {});
+    }, 400);
+  }
+
+  window.exportProgress = function () {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'profile.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    hint('已导出 profile.json，替换项目里的同名文件即可');
+  };
+
+  function hint(msg) {
+    const el = document.getElementById('syncHint');
+    if (!el) return;
+    el.textContent = msg;
+    setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 3000);
+  }
+
   window.resetAll = function () {
     if (!confirm('确定清空所有学习进度？')) return;
     Object.keys(S).forEach(k => delete S[k]);
@@ -664,5 +736,9 @@
     window.scrollTo(0, 0);
   };
 
-  render();
+  boot();
+  async function boot() {
+    await pullProfile();
+    render();
+  }
 })();
